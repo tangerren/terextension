@@ -1,6 +1,6 @@
-const vscode = require('vscode')
-const DICTQuery = require('./query')
-const formatter = require('./format')
+import { query } from './query'
+import { getWordArray, cleanWord } from './format'
+
 
 const markdownHeader = `翻译 \`$word\` :  
 `
@@ -17,7 +17,7 @@ const genMarkdown = function (word: any, translation: any, p: any) {
   return `- [${word}](https://translate.google.cn?text=${word}) ${p ? '*/' + p + '/*' : ''}:  ${translation.replace(/\\n/g, `  `)}`
 }
 
-export async function init() {
+export async function init(vscode: any) {
   vscode.languages.registerHoverProvider('*', {
     async provideHover(document: any, position: any) {
       if (!document.getWordRangeAtPosition(position)) {
@@ -28,12 +28,12 @@ export async function init() {
       if (selectText && word.indexOf(selectText) > -1) {
         word = selectText
       }
-      let originText = formatter.cleanWord(word)
-      let words = formatter.getWordArray(formatter.cleanWord(word))
+      let originText = cleanWord(word)
+      let words = getWordArray(cleanWord(word))
       let hoverText = ''
       for (let i = 0; i < words.length; i++) {
         let _w = words[i]
-        let ret = await DICTQuery(_w)
+        let ret: any = await query(_w)
         if (i == 0) {
           hoverText += genMarkdown(_w, ret.w, ret.p)
         } else {
@@ -42,6 +42,7 @@ export async function init() {
       }
       const header = markdownHeader.replace('$word', originText)
       hoverText = header + hoverText + markdownFooter
+      console.log(hoverText)
       return new vscode.Hover(hoverText)
     }
   })

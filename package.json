@@ -1,5 +1,6 @@
 {
 	"name": "terextension",
+	"publisher": "ter",
 	"displayName": "TerExtension",
 	"description": "ter's extension",
 	"version": "0.0.1",
@@ -10,16 +11,11 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:terextension.helloWorld"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
-			{
-				"command": "terextension.helloWorld",
-				"title": "Hello World"
-			}
-		]
+		"commands": []
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
