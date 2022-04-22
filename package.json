@@ -10,12 +10,65 @@
 	"categories": [
 		"Other"
 	],
-	"activationEvents": [
-		"*"
-	],
 	"main": "./out/extension.js",
+	"activationEvents": [
+		"onStartupFinished"
+	],
 	"contributes": {
-		"commands": []
+		"commands": [
+			{
+				"command": "terextension.translate",
+				"title": "翻译"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "extension.translate",
+					"group": "navigation"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"command": "terextension.translate",
+				"key": "ctrl+t",
+				"mac": "cmd+t",
+				"when": "editorTextFocus"
+			}
+		],
+		"configuration": [
+			{
+				"title": "选中才进行查询",
+				"properties": {
+					"translate.encoding": {
+						"type": "boolen",
+						"default": "utf-8",
+						"description": "选中才进行查询"
+					}
+				}
+			},
+			{
+				"title": "鼠标悬浮自动翻译",
+				"properties": {
+					"translate.encoding": {
+						"type": "boolen",
+						"default": "utf-8",
+						"description": "鼠标悬浮自动翻译"
+					}
+				}
+			},
+			{
+				"title": "按键触发翻译",
+				"properties": {
+					"translate.encoding": {
+						"type": "string",
+						"default": "utf-8",
+						"description": "按键触发翻译"
+					}
+				}
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

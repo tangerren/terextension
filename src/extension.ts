@@ -1,30 +1,24 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import { ExtensionContext, commands, window } from 'vscode';
+
 import * as  translate from './translate/index'
-// const translate = require('./src/index.js');
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+// 扩展被激活的时候执行，第一次执行命令才会激活扩展
+export function activate(context: ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
+	// 扩展被激活的时候执行
 	console.log('Congratulations, your extension "terextension" is now active!');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('terextension.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from TerExtension!');
+	// 在 package.json 中声明的 command 需要在这里注册，
+	// 参数必须匹配 package.json 中的 command 字段
+	let disposable = commands.registerCommand('terextension.translate', () => {
+		// 每次执行command，都会运行这里的代码
+		// 显示消息框
+		window.showInformationMessage('Hello World from TerExtension!');
+		translate.init();
 	});
 
 	context.subscriptions.push(disposable);
-
-	translate.init(vscode)
 }
 
-// this method is called when your extension is deactivated
+// 扩展销毁的之后执行
 export function deactivate() { }

@@ -1,7 +1,7 @@
 import { query } from './query'
 import { getWordArray, cleanWord } from './format'
 
-
+import { Hover, Position, TextDocument, languages, window } from 'vscode';
 const markdownHeader = `翻译 \`$word\` :  
 `
 const markdownFooter = `  
@@ -17,14 +17,14 @@ const genMarkdown = function (word: any, translation: any, p: any) {
   return `- [${word}](https://translate.google.cn?text=${word}) ${p ? '*/' + p + '/*' : ''}:  ${translation.replace(/\\n/g, `  `)}`
 }
 
-export async function init(vscode: any) {
-  vscode.languages.registerHoverProvider('*', {
-    async provideHover(document: any, position: any) {
+export async function init() {
+  languages.registerHoverProvider('*', {
+    async provideHover(document: TextDocument, position: Position) {
       if (!document.getWordRangeAtPosition(position)) {
         return
       }
       let word = document.getText(document.getWordRangeAtPosition(position))
-      let selectText = vscode.window.activeTextEditor.document.getText(vscode.window.activeTextEditor.selection)
+      let selectText = window.activeTextEditor?.document.getText(window.activeTextEditor.selection);
       if (selectText && word.indexOf(selectText) > -1) {
         word = selectText
       }
@@ -43,7 +43,7 @@ export async function init(vscode: any) {
       const header = markdownHeader.replace('$word', originText)
       hoverText = header + hoverText + markdownFooter
       console.log(hoverText)
-      return new vscode.Hover(hoverText)
+      return new Hover(hoverText)
     }
   })
 }
